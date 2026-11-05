@@ -156,7 +156,7 @@ export function FeedbackDialog({ page }) {
   const where = about || options[0];
   const close = () => ref.current?.close();
   return (
-    <dialog ref={ref} className="palette demo-dialog" aria-labelledby="fbd-h" onClick={(e) => e.target === ref.current && close()}>
+    <dialog ref={ref} className="palette dialog" aria-labelledby="fbd-h" onClick={(e) => e.target === ref.current && close()}>
       <div className="dialog-body">
         <div className="card-head">
           <h2 id="fbd-h">Send feedback</h2>
@@ -228,7 +228,7 @@ export function Assumed({ id, children }) {
         <span className="assumed-tag">{ans ? "Your answer" : "Our guess"}</span>
       </button>
       {open && createPortal( // a dialog can't sit inside the paragraphs and table cells the tag appears in
-        <dialog ref={ref} className="palette demo-dialog" aria-label={`Correct: ${a.topic}`} onClose={() => setOpen(false)} onClick={(e) => e.target === ref.current && ref.current.close()}>
+        <dialog ref={ref} className="palette dialog" aria-label={`Correct: ${a.topic}`} onClose={() => setOpen(false)} onClick={(e) => e.target === ref.current && ref.current.close()}>
           <div className="dialog-body">
             <div className="card-head">
               <h2>{a.topic}</h2>

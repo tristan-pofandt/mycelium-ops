@@ -7,7 +7,7 @@ Right now it is **prototype 1**: a clickable demo on a made-up company, Brolga I
 ## Where things are
 
 - `web/src/demo/`: the app. `DemoApp.jsx` is the shell and the page list. Pages are in `pages/`. Data is made up in `data.js` and friends. What reviewers click is saved by `store.js`.
-- **Design kit** in `web/src/` (`tokens.css`, `app.css`, `choreography.js`, `reduced.js`, `motion/*`, `Page.jsx`, `shell.jsx`, `ui.jsx`, `charts.jsx`, `tasks.jsx`, `icons.jsx`, `theme.js`) and `docs/design/`. **This repo holds the reference copy.** Every other Mycelium repo copies it unchanged. If you change a kit file, copy it to `mycelium-monitor` too.
+- **Design kit** in `web/src/` (`tokens.css`, `app.css`, `choreography.js`, `reduced.js`, `motion/*`, `Page.jsx`, `shell.jsx`, `ui.jsx`, `charts.jsx`, `tasks.jsx`, `customise.jsx`, `icons.jsx`, `theme.js`) and `docs/design/`. **This repo holds the reference copy.** Every other Mycelium repo copies it unchanged. If you change a kit file, copy it to `mycelium-monitor` too.
 - `demo/server.py`: serves the build and saves feedback to git-ignored `demo/feedback/`. Never commit feedback.
 - `infra/`: the Dockerfile and `homelab/demo-deploy.sh`.
 - `reports/` and `research_notes/`: research on the compliance (RegTech) market.

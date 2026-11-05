@@ -23,11 +23,4 @@ export function layoutFor(persona, saved = {}, grants = {}, roleDefaults = {}) {
 // Cards the role may add that the layout doesn't show yet.
 export const addable = (persona, layout, caps) => HOME_CARDS.filter((c) => allowed(c, persona, caps) && !layout.some((x) => x.id === c.id));
 
-export function move(layout, from, to) {
-  if (to < 0 || to >= layout.length || from === to) return layout;
-  const next = [...layout];
-  next.splice(to, 0, ...next.splice(from, 1));
-  return next;
-}
-
-export const sameLayout = (a, b) => JSON.stringify(a) === JSON.stringify(b);
+export { moveItem as move, sameLayout } from "../customise.jsx"; // the kit's reorder helpers

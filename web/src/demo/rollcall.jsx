@@ -113,7 +113,7 @@ export function RollCallDialog() {
   }, []);
   const close = () => ref.current?.close();
   return (
-    <dialog ref={ref} className="palette demo-dialog" aria-labelledby="rcd-h" onClose={() => setOpen(false)} onClick={(e) => e.target === ref.current && close()}>
+    <dialog ref={ref} className="palette dialog" aria-labelledby="rcd-h" onClose={() => setOpen(false)} onClick={(e) => e.target === ref.current && close()}>
       <div className="dialog-body">
         <div className="card-head">
           <h2 id="rcd-h">Start a roll call</h2>

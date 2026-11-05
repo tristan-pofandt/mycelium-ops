@@ -45,9 +45,6 @@
 .fb-kind[aria-pressed="true"] { border-color: var(--accent); color: var(--accent-text); background: var(--accent-soft); }
 
 /* Dialogs */
-.demo-dialog { width: min(620px, calc(100vw - 32px)); max-height: calc(100dvh - 48px); overflow-y: auto; margin-top: 8vh; }
-.dialog-body { padding: 22px; display: grid; gap: 12px; }
-.dialog-body .card-head { margin-bottom: 0; }
 .answer-form { display: grid; gap: 10px; }
 .answer-q { margin: 0; font-weight: 500; }
 

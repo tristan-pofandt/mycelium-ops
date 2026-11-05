@@ -127,7 +127,7 @@ export function IssueButton({ task, className, children }) {
     <>
       <button type="button" className={className} onClick={show}>{children}</button>
       {open && createPortal(
-        <dialog ref={ref} className="palette demo-dialog" aria-label="Issue a permit to work" onClose={() => setOpen(false)} onClick={(e) => e.target === ref.current && ref.current.close()}>
+        <dialog ref={ref} className="palette dialog" aria-label="Issue a permit to work" onClose={() => setOpen(false)} onClick={(e) => e.target === ref.current && ref.current.close()}>
           <div className="dialog-body"><IssuePermit task={task} onClose={() => ref.current?.close()} /></div>
         </dialog>, document.body)}
     </>

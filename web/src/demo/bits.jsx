@@ -159,7 +159,7 @@ export function PersonButton({ id, children }) {
     <>
       <button type="button" className="link" onClick={show}>{children || p.name}</button>
       {open && createPortal(
-        <dialog ref={ref} className="palette demo-dialog" aria-label={p.name} onClose={() => setOpen(false)} onClick={(e) => e.target === ref.current && ref.current.close()}>
+        <dialog ref={ref} className="palette dialog" aria-label={p.name} onClose={() => setOpen(false)} onClick={(e) => e.target === ref.current && ref.current.close()}>
           <div className="dialog-body"><PersonCard id={id} onClose={() => ref.current?.close()} /></div>
         </dialog>, document.body)}
     </>

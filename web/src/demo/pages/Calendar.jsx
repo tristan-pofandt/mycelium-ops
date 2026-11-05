@@ -208,7 +208,7 @@ export default function Calendar() {
         )}
       </section>
       {open && createPortal(
-        <dialog ref={ref} className="palette demo-dialog" aria-label={open.title} onClose={() => setOpen(null)} onClick={(e) => e.target === ref.current && ref.current.close()}>
+        <dialog ref={ref} className="palette dialog" aria-label={open.title} onClose={() => setOpen(null)} onClick={(e) => e.target === ref.current && ref.current.close()}>
           <EventDialog e={open} onClose={() => ref.current?.close()} />
         </dialog>, document.body)}
     </>

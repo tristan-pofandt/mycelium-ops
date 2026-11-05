@@ -56,9 +56,9 @@ function DefaultHome() {
       <label className="field">Role <select className="input" value={role} onChange={(e) => { setRole(e.target.value); setDraft(null); setPick(""); }}>
         {PERSONAS.map((p) => <option key={p.id} value={p.id}>{roleName(p.id)}</option>)}</select></label>
       <ol ref={listRef} className="queue home-default-list" role="list">{list.map((x, i) => (
-        <li key={x.id} className="queue-item home-add-row">
+        <li key={x.id} className="queue-item cust-add-row">
           <p><span className="muted small">{i + 1}.</span> <strong>{name(x.id)}</strong>{x.size === 2 && !cardById(x.id).full ? <span className="muted small"> · wide</span> : ""}</p>
-          <span className="home-tools-buttons" role="group" aria-label={`${name(x.id)}, position ${i + 1} of ${list.length}`}>
+          <span className="cust-tools-buttons" role="group" aria-label={`${name(x.id)}, position ${i + 1} of ${list.length}`}>
             <button type="button" className="icon-button" disabled={i === 0} aria-label="Move up" onClick={() => { edit(move(list, i, i - 1), `${name(x.id)} moved to position ${i} of ${list.length}`); refocus(i - 1, "Move up"); }}><Icon name="chevron" className="flip" /></button>
             <button type="button" className="icon-button" disabled={i === list.length - 1} aria-label="Move down" onClick={() => { edit(move(list, i, i + 1), `${name(x.id)} moved to position ${i + 2} of ${list.length}`); refocus(i + 1, "Move down"); }}><Icon name="chevron" /></button>
             <button type="button" className="button" onClick={() => { edit(list.filter((y) => y.id !== x.id), `${name(x.id)} removed`); refocus(i, "Remove"); }}>Remove</button>

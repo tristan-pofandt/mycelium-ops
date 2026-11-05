@@ -92,7 +92,6 @@ Effort: S about a day, M a few days, L a week or more of evenings.
 ## Design to-do (from the 5 Nov review, 28/40)
 
 - Long pages (Security, My data on phones) need in-page links or more folding.
-- Escape should leave Customise mode.
 - No search across people or questions yet.
 - Money columns in tables are left-aligned.
 - About 275px of header and banner before content for the GM on a phone.
