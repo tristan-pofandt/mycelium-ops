@@ -149,7 +149,7 @@ def create_app(folder=None, code=None):
         if path and (dist / path).is_file():
             return send_from_directory(dist, path)
         if not (dist / "index.html").is_file():
-            return "Build the demo first: cd web && npm run build:demo", 503
+            return "Build the demo first: cd web && npm run build", 503
         return send_from_directory(dist, "index.html")  # client routes
 
     @app.after_request

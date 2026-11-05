@@ -1,8 +1,8 @@
 {
   "id": "/",
-  "name": "Mycelium demo",
-  "short_name": "Mycelium",
-  "description": "A clickable demo of Mycelium on a made-up multi-site manufacturer.",
+  "name": "Mycelium Ops (prototype 1)",
+  "short_name": "Mycelium Ops",
+  "description": "Mycelium Ops prototype 1: a clickable demo on a made-up multi-site manufacturer.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",

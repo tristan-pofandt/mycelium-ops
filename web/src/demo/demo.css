@@ -1,17 +1,8 @@
 /* The demo's additions to Mycelium's dashboard layer (app.css): form fields, the "Assumed" tags, feedback, calendar, board,
    permission grid, wizard and chat. Same tokens and radii; motion is transform and opacity only. */
 
-.input { font: inherit; font-size: 14px; color: var(--text); background: var(--bg-surface); border: 1px solid var(--border-strong); border-radius: var(--r-field); padding: 9px 12px; min-width: 0; }
-.input:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
-textarea.input { width: 100%; resize: vertical; line-height: 1.45; }
-input.input { width: 100%; }
-.toolbar input.input, .toolbar select.input { width: auto; }
-select.input { padding-right: 28px; }
 .block { display: block; }
 .late { color: var(--error); }
-.badge-warn { background: color-mix(in srgb, var(--warning) 16%, transparent); color: var(--warning); }
-.badge-bad { background: var(--bad-soft); color: var(--error); }
-.badge-ok { background: var(--good-soft); color: var(--success); }
 
 /* Banner and header extras */
 .demo-banner { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 16px; margin: 0 var(--gutter) 8px; padding: 8px 8px 8px 16px; border-radius: var(--r-field); background: var(--accent-soft); color: var(--text); font-size: 14px; line-height: 1.5; }
@@ -24,38 +15,15 @@ select.input { padding-right: 28px; }
 .systems-button { display: inline-flex; align-items: center; gap: 8px; text-decoration: none; white-space: nowrap; }
 .systems-button .count, .banner-actions .count { font-size: 12px; font-variant-numeric: tabular-nums; padding: 1px 8px; border-radius: 999px; background: var(--accent-soft); color: var(--accent-text); }
 .systems-button.active { border-color: var(--accent); }
-.demo .topbar-start .picker-button { max-width: 260px; }
-/* The tab row takes only the space left between the two sides (and scrolls if it must), so it can never cover the
-   "Viewing as" picker on the left or the buttons on the right. */
-.demo .topbar { grid-template-columns: auto minmax(0, 1fr) auto; }
-.demo .pills { min-width: 0; }
-.demo .pills ul { width: fit-content; max-width: 100%; margin: 0 auto; }
-@media (max-width: 1600px) { /* the tabs plus the labelled right-hand buttons don't share one row: the tabs get their own */
-  .demo .topbar { grid-template-columns: auto 1fr; }
-  .demo .pills { grid-column: 1 / -1; grid-row: 2; }
-}
-/* Tables, charts, the week and the team map take a full row, as cards with them do in the main app */
-.page-grid > .panel-card:has(.table-wrap, .chart, .week, .board, .team-map) { grid-column: 1 / -1; }
-.feedback-button, .tool-link { display: inline-flex; align-items: center; gap: 8px; white-space: nowrap; text-decoration: none; }
-.tool-link.active { border-color: var(--accent); color: var(--accent-text); }
-.pill-tool { display: none; } /* Roles, Setup and Audit join the tab row below 960px */
-/* The header narrows in steps, keeping every control labelled (the GM has 9 tabs, 3 tools and Roll call):
-   - below 1600px the tabs take their own row;
-   - below 1320px Your systems and Feedback (the reviewer's controls, not the app's) move into the demo banner;
-   - below 960px Roles, Setup and Audit join the end of the tab row, which scrolls;
-   - below 760px (phones) Roll call moves into the banner too (rollcall.css) and "How it works" becomes a link. */
+/* The week, board and team map take a full row, like tables and charts (app.css) */
+.page-grid > .panel-card:has(.week, .board, .team-map) { grid-column: 1 / -1; }
+.feedback-button { display: inline-flex; align-items: center; gap: 8px; white-space: nowrap; text-decoration: none; }
+/* The demo's own header steps, on top of app.css's: below 1320px Your systems and Feedback (the reviewer's controls, not the
+   app's) move into the demo banner; below 760px Roll call moves there too (rollcall.css) and "How it works" becomes a link. */
 @media (max-width: 1320px) {
   .demo .topbar-end .systems-button, .demo .topbar-end .feedback-button { display: none; }
   .banner-mid { display: inline-flex !important; }
 }
-@media (max-width: 960px) {
-  .demo .tool-link { display: none; }
-  .pill-tool { display: block; }
-}
-/* Fade the tab row's end only while tabs are hidden past it (DemoApp sets has-more); app.css's phone fade otherwise stays off */
-.demo .pills ul.has-more { -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 56px), transparent); mask-image: linear-gradient(to right, #000 calc(100% - 56px), transparent); }
-.demo .pills ul:not(.has-more) { -webkit-mask-image: none; mask-image: none; }
-.picker-icon { color: var(--text-muted); }
 
 /* Assumed tags: dashed, so a guess never reads as a fact */
 .assumed { display: inline-flex; align-items: center; gap: 6px; max-width: 100%; font: inherit; font-size: inherit; color: var(--text); background: transparent; border: 1px dashed var(--text-faint); border-radius: var(--r-tag); padding: 1px 4px 1px 7px; cursor: pointer; text-align: left; vertical-align: baseline; transition: background var(--dur-hover) var(--ease-out); }
@@ -82,10 +50,6 @@ select.input { padding-right: 28px; }
 .dialog-body .card-head { margin-bottom: 0; }
 .answer-form { display: grid; gap: 10px; }
 .answer-q { margin: 0; font-weight: 500; }
-.facts { display: grid; grid-template-columns: max-content 1fr; gap: 6px 16px; margin: 0 0 12px; font-size: 14px; }
-.facts dt { color: var(--text-muted); }
-.facts dd { margin: 0; }
-.notice-card { grid-column: 1 / -1; }
 
 /* Lists */
 .queue-item.is-done p { color: var(--text-muted); }
@@ -194,8 +158,6 @@ select.input { padding-right: 28px; }
 .sys-topic { font-weight: 500; }
 .sys-value { color: var(--text-muted); font-size: 14px; }
 .sys-row details[open] { padding-bottom: 16px; }
-.progress { height: 8px; border-radius: 999px; background: var(--gauge-off); overflow: hidden; margin: 8px 0 14px; }
-.progress span { display: block; height: 100%; background: var(--accent); transform-origin: left; transition: transform 0.4s var(--ease-out); }
 
 @media (max-width: 760px) {
   /* Phone: the header keeps the logo, "Viewing as" and the theme; Your systems and Feedback move into the banner with their
@@ -207,21 +169,12 @@ select.input { padding-right: 28px; }
   .banner-guide-link { display: inline; }
   .banner-actions { width: 100%; }
   .banner-actions .button { min-height: 40px; }
-  .demo .topbar-end { gap: 6px; }
-  .demo .topbar { grid-template-columns: minmax(0, 1fr) auto; }
-  .demo .topbar-start, .demo .picker { min-width: 0; }
-  .demo .topbar-start .picker-button { max-width: 100%; }
-  .demo .picker-button span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .team-map { height: 420px; }
   .week { grid-template-columns: repeat(7, minmax(140px, 1fr)); }
   .sys-row summary { grid-template-columns: 1fr auto; }
   .sys-value { grid-column: 1 / -1; grid-row: 2; }
-  .facts { grid-template-columns: 1fr; gap: 2px; }
-  .facts dd { margin-bottom: 6px; }
 }
-@media (prefers-reduced-motion: reduce) { .progress span { transition: none; } .event:active { scale: none; } }
-.demo .toolbar .segmented { max-width: 100%; overflow-x: auto; scrollbar-width: none; } /* the site switcher scrolls on a phone */
-.demo .segmented button { white-space: nowrap; }
+@media (prefers-reduced-motion: reduce) { .event:active { scale: none; } }
 
 /* Person search */
 .person-search { position: relative; }
@@ -247,9 +200,6 @@ select.input { padding-right: 28px; }
 .fb-thanks .icon { color: var(--success); }
 .fb-thanks p { margin: 0; flex: 1 1 260px; }
 
-/* Links inside content use the accent, never browser blue */
-.demo main a:not([class]) { color: var(--accent-text); font-weight: 500; text-decoration: none; }
-.demo main a:not([class]):hover { text-decoration: underline; text-underline-offset: 3px; }
 
 /* Full-row blocks in the demo */
 .demo .page-grid > .insight, .demo .page-grid > .start-strip, .demo .page-grid > .wizard { grid-column: 1 / -1; }
@@ -257,7 +207,6 @@ select.input { padding-right: 28px; }
 /* Touch: tags, chips and links stay at least 36-40px tall to tap */
 @media (pointer: coarse) {
   .assumed { min-height: 36px; padding: 4px 6px 4px 10px; }
-  .chip { min-height: 40px; }
   .sys-row summary { min-height: 48px; }
 }
 
@@ -305,14 +254,7 @@ select.input { padding-right: 28px; }
 /* Security: the map card a "Show on map" link jumps to sits below the sticky header */
 #security-map { scroll-margin-top: 150px; }
 
-/* Review 2026-11-05: toolbars and card tools shrink and wrap on phones; the Roles grid keeps permission names in view while it scrolls. */
-.toolbar label { max-width: 100%; }
-.toolbar select.input { min-width: 0; max-width: 100%; text-overflow: ellipsis; }
-.demo .card-tools { flex-wrap: wrap; min-width: 0; }
+/* The Roles grid keeps permission names in view while it scrolls. */
 .matrix tbody th, .matrix thead th:first-child { position: sticky; left: 0; z-index: 1; background: var(--bg-card); }
 .matrix tbody .matrix-group th { background: var(--bg-pop); }
-/* Light mode: the amber badge text needs a darker step to reach 4.5:1 on its own tint (DESIGN.md, Light-Mode Contrast Rule) */
-@media (prefers-color-scheme: light) {
-  :root:not([data-theme="dark"]) .badge-warn { background: color-mix(in srgb, var(--warning) 10%, transparent); color: color-mix(in srgb, var(--warning) 85%, var(--text)); }
-}
-:root[data-theme="light"] .badge-warn { background: color-mix(in srgb, var(--warning) 10%, transparent); color: color-mix(in srgb, var(--warning) 85%, var(--text)); }
+

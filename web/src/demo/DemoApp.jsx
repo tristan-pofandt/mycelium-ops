@@ -1,10 +1,10 @@
 // The demo shell: Mycelium's header and pill nav, a "Viewing as" switcher that shows the same app as six different people,
 // a banner saying everything is fictional, and the feedback box under every page.
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { NavLink, Navigate, Route, Routes, useLocation, useParams } from "react-router";
 import { Icon, Logo } from "../icons.jsx";
 import { Picker, rovingKeys } from "../ui.jsx";
-import { ThemeToggle, usePill } from "../App.jsx";
+import { ThemeToggle, useMoreTabs, usePill } from "../shell.jsx";
 import Page from "../Page.jsx";
 import { COMPANY, PERSONAS, person } from "./data.js";
 import { ASSUMPTIONS } from "./assumptions.js";
@@ -91,22 +91,10 @@ function Shell() {
   const nav = PAGES.filter((p) => !p.tool && !p.hidden && canSee(p, persona.id, grants));
   const tools = PAGES.filter((p) => p.tool && canSee(p, persona.id, grants));
   const answered = ASSUMPTIONS.filter((a) => answers[a.id]).length;
-  // The tab row scrolls when it can't fit (the GM's 9 tabs plus the tools below 960px): fade its end while more tabs are
-  // hidden, so a row that happens to end between two tabs doesn't look complete.
-  const [more, setMore] = useState(false);
-  useEffect(() => {
-    const ul = rowRef.current;
-    if (!ul || typeof ResizeObserver === "undefined") return undefined;
-    const check = () => setMore(ul.scrollWidth - ul.scrollLeft - ul.clientWidth > 4);
-    const ro = new ResizeObserver(check);
-    ro.observe(ul);
-    ul.addEventListener("scroll", check, { passive: true });
-    check();
-    return () => { ro.disconnect(); ul.removeEventListener("scroll", check); };
-  }, [nav.length, tools.length]);
+  const more = useMoreTabs(rowRef, [nav.length, tools.length]); // fade the tab row's end only while tabs are hidden past it
   const Body = page.component;
   const visible = canSee(page, persona.id, grants);
-  useEffect(() => { document.title = `${page.title} · Mycelium demo`; }, [page.title]);
+  useEffect(() => { document.title = `${page.title} · Mycelium Ops`; }, [page.title]);
   return (
     <div className="shell demo">
       <a href="#main" className="skip-link">Skip to content</a>

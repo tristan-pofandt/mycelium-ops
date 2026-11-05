@@ -9,23 +9,18 @@ concurrency:
   group: ci-${{ github.ref }}
   cancel-in-progress: true
 jobs:
-  server:
+  demo-server:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: server
+        working-directory: demo
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: "3.13"
-      - run: pip install -r requirements.txt pip-audit
+      - run: pip install "flask>=3.1,<4"
       - run: python -m unittest -q
-      - run: python -m unittest -q
-        working-directory: emitters/python
-      - run: python -m unittest -q
-        working-directory: hooks/claude
-      - run: pip-audit -r requirements.txt
   web:
     runs-on: ubuntu-latest
     defaults:

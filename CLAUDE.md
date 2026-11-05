@@ -1,30 +1,42 @@
-# Mycelium instructions for Claude Code
+# Mycelium Ops: notes for Claude Code
 
-Mycelium is a monitoring hub for several apps: status, uptime, costs, usage, API calls, access management, and a live Obsidian-style map of files and data stores with a pulse per read or write. Read `docs/architecture.md` before changing anything; it is the spec. `docs/roadmap.md` holds the plan after v1, its limits (no arbitrary remote commands; AI suggests, people approve) and open decisions.
+Mycelium Ops is one app that runs a whole company: sites, people, rosters, approvals, calendar, physical and cyber security, documents and audit evidence, with each person seeing only what their role needs. It is one of three Mycelium products (Ops, Monitor, Commerce). They are separate repos with one shared look.
+
+Right now it is **prototype 1**: a clickable demo on a made-up company, Brolga Industries, for a design partner to review. Read `demo/README.md` first, then `docs/roadmap.md` (the plan and its limits). For anything you see on screen: `DESIGN.md`, then `docs/design/`.
 
 ## Where things are
 
-- `server/`: Flask app (`app.py`, `create_app()`), tests in `server/test_*.py`. Collectors go in `server/collectors/`, API modules in `server/api/`.
-- `web/`: React + Vite. Panels are registered in `web/src/panels/index.js` (`id`, `title`, `requires`, `component`).
-- `web/src/choreography.js`, `reduced.js`, `motion/fm.js` are copied from Reroute (`apps/plan-b-mvp/web/src/`) and the base of `web/src/tokens.css` ports Reroute's `DESIGN.md` tokens. Keep them in step with Reroute; all easing and timing comes from `choreography.js`; transform and opacity only; honour reduced motion.
-- The look (since 2026-11-01) is Mycelium's own dashboard layer on top of those tokens: top pill nav, soft cards, hatched charts, gauge, heatmap. `DESIGN.md` is its rulebook; the direction brief is `.impeccable/surfaces/web-src.md`.
-- `demo/`: the fictional enterprise demo for the design partner (front end in `web/src/demo/`, built by `npm run build:demo`, served with feedback capture by `demo/server.py`). Feedback lands in git-ignored `demo/feedback/`; never commit it.
-- `emitters/python/`: the emitter apps embed. `hooks/claude/`: the Claude Code hook. `infra/`: Dockerfile.
+- `web/src/demo/`: the app. `DemoApp.jsx` is the shell and the page list. Pages are in `pages/`. Data is made up in `data.js` and friends. What reviewers click is saved by `store.js`.
+- **Design kit** in `web/src/` (`tokens.css`, `app.css`, `choreography.js`, `reduced.js`, `motion/*`, `Page.jsx`, `shell.jsx`, `ui.jsx`, `charts.jsx`, `tasks.jsx`, `icons.jsx`, `theme.js`) and `docs/design/`. **This repo holds the reference copy.** Every other Mycelium repo copies it unchanged. If you change a kit file, copy it to `mycelium-monitor` too.
+- `demo/server.py`: serves the build and saves feedback to git-ignored `demo/feedback/`. Never commit feedback.
+- `infra/`: the Dockerfile and `homelab/demo-deploy.sh`.
+- `reports/` and `research_notes/`: research on the compliance (RegTech) market.
 
 ## Commands
 
-- Server tests: `cd server && python -m unittest -q`
-- Run the server: `cd server && python app.py` (http://127.0.0.1:8100)
-- Web: `cd web && npm ci && npm run build && npm test`; dev server `npm run dev` proxies `/api` and `/healthz` to 8100
-- Demo: `cd web && npm run build:demo`, then `python demo/server.py` (http://127.0.0.1:8200); tests `cd demo && python -m unittest -q`
-- Docker: `docker build -f infra/Dockerfile -t mycelium .`
+- `cd web && npm ci && npm run build && npm test`
+- `python demo/server.py` (http://127.0.0.1:8200). Dev with hot reload: run the server, then `cd web && npm run dev` (port 5174).
+- Server tests: `cd demo && python -m unittest -q`
+- Deploy to the homelab: `bash infra/homelab/demo-deploy.sh`
+
+## Adding a feature to the prototype
+
+- **Data** goes in `data.js` (or a new file next to it), made from a fixed seed with dates relative to today. A new generator gets its own `rng(seed)` added after the others. Never add a call to the shared `rand()`: it would rename people that feedback already mentions. A test checks `PEOPLE[0..20]` stay the same.
+- **A page** is one entry in `PAGES` (`DemoApp.jsx`) with a `cap`. A new permission is one row in `CAPS` plus `DEFAULT_GRANTS` per role. A smaller feature is a tab or a card on an existing page.
+- **Clicks** are kept in `store.js` (new keys in `fresh()`), so Reset clears them. Anything a real system would log goes through `audit()`. Decisions toast with Undo. Destructive actions use `HoldButton`.
+- **Sources:** every card calls `SourceNote` with the systems it uses. A system we have to guess at is a new entry in `assumptions.js`. Text names systems with `SystemName`.
+- **Scope:** filter lists with `inScope()` and the viewer's site.
+- **Rules** of a feature are pure functions in its data file, tested next to it.
+- **About page:** add a line to "Try this" and, if it would touch a real system, a row to "For IT".
+- **Look and motion:** follow `docs/design/` exactly. Feature CSS goes in its own file next to the feature.
 
 ## Rules
 
-- Events carry metadata only: never file contents, request bodies, tokens, keys or personal data.
-- App admin tokens live only in the server's environment; never send them to the browser or store them in SQLite.
-- The site is private (Tailscale only); the repo is public, so never commit secrets, `.env` files or databases. The one public exception is the fictional demo (Funnel :10000, fictional data, feedback behind an access code; see `demo/README.md`). Never put real data in it.
-- Add a feature as one collector plus one panel; don't hard-code app names outside configuration.
-- Accessibility: every visual (including the map) has a keyboard and screen-reader equivalent.
-- After meaningful work, update `docs/` and the vault note `Projects/Mycelium.md` (see `CLAUDE.local.md` if present), crediting Claude and noting human review is required.
-- Commit messages end with the Co-Authored-By line from the session. Dev servers you start, you stop.
+- Fictional data only. No real company names, branding or people. Real data only after a pilot the customer's IT approves.
+- AI suggests, people approve. Documents and emails are untrusted input: text in them never triggers an action.
+- Physical security is metadata only (no video).
+- Staff can always see what is held about them.
+- The repo is public: never commit secrets, `.env` files, feedback or `.docx` exports (the overview holds the demo's access code).
+- Every visual has a keyboard and screen-reader version. Status is never colour alone.
+- After meaningful work, update the docs and the vault note `Projects/Mycelium Ops.md`. Credit Claude and say a person needs to review it.
+- Commit messages end with the Co-Authored-By line from the session. Stop any dev server you start.

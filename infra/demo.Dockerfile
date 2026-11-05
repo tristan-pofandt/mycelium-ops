@@ -1,11 +1,11 @@
-# The fictional demo (demo/), separate from Mycelium: no real data, public behind an access code. Build from the repo root:
+# Mycelium Ops prototype 1 (demo/): fictional data only, public behind an access code. Build from the repo root:
 #   docker build -f infra/demo.Dockerfile -t mycelium-demo .
 FROM node:22-slim AS web
 WORKDIR /web
 COPY web/package.json web/package-lock.json ./
 RUN npm ci --no-fund --no-audit
 COPY web/ ./
-RUN npm run build:demo
+RUN npm run build
 
 FROM python:3.13-slim
 ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1 DEMO_FEEDBACK_DIR=/data
