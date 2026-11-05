@@ -1,139 +1,86 @@
-# Physical security data as compliance evidence: is the gap real? (as of November 2026)
+# Can physical security data be compliance evidence? A check on the gap
 
-Scope note: about 16 tool calls (searches and fetches). Several vendor pages blocked fetching (RightCrowd 403, Genetec feature note empty), so some findings rest on search snippets of vendor pages. Most sources are vendor marketing; treat feature claims as vendor-stated.
+Source notes for `reports/RegTech market and gaps.md`: whether door, camera and visitor systems, PIAM tools, GRC tools and SIEMs already turn physical security data into audit evidence, and what is still missing. Research 4 Nov 2026 by Claude; needs human review.
 
-Plain-language glossary for a beginner:
-- **GRC tool** (governance, risk, compliance): software such as Vanta, Drata or ServiceNow IRM that tracks a company's controls and collects "evidence" (screenshots, logs, reports) that auditors check for standards like ISO 27001 or SOC 2.
-- **PACS** (physical access control system): the door/badge system, e.g. Gallagher Command Centre, Genetec Synergis, Lenel OnGuard, C-CURE 9000, Inner Range Integriti.
-- **VMS** (video management system): the CCTV software, e.g. Milestone XProtect, Genetec Security Center (Omnicast), Verkada Command.
-- **PIAM** (physical identity and access management): a layer that sits above one or more PACS and manages who should have which badge access, with approvals, joiner/mover/leaver workflows and periodic access reviews.
-- **Access review / recertification / attestation**: a manager is asked on a schedule "does this person still need access to this door/zone?" and approves or revokes. Auditors want proof this happens (ISO 27001 Annex A 5.18 and 7.2, SOC 2 CC6.x).
+**How sure:** about 16 searches and fetches. Some vendor pages blocked fetching (RightCrowd 403; a Genetec note came back empty), so some findings rest on search snippets. Most sources are vendor marketing: feature claims are the vendor's own. **[K]** = from memory, not checked.
 
-Blunt headline: the claim "no product turns physical security data into compliance evidence" is **false**. Enterprise PIAM vendors (AlertEnterprise, HID SAFE, RightCrowd, Genetec ClearID) already do access reviews and audit-ready reports, and AlertEnterprise runs natively inside ServiceNow. The narrower claim "the startup GRC tools (Vanta, Drata) don't pull evidence from door or camera systems" **looks true** on what I could find. The open space is mid-market, cross-vendor, Australian-framework, and physical-plus-cyber-plus-people in one control view, not "physical evidence" as such.
+Words:
+- **PACS** = door and badge system (Gallagher Command Centre, Genetec Synergis, Lenel OnGuard, C-CURE 9000, Inner Range Integriti).
+- **VMS** = CCTV software (Milestone XProtect, Genetec Security Center/Omnicast, Verkada Command).
+- **PIAM** = a layer above one or more PACS that manages who should hold which badge access, with approvals, joiner/mover/leaver steps and regular access reviews.
+- **Access review** (also recertification or attestation) = a manager confirms on a schedule that a person still needs a door or zone, or removes it. Auditors want proof this happens (ISO 27001 A.5.18 and A.7.2; SOC 2 CC6.x).
 
-## Do access control and VMS vendors offer compliance reporting, audit reports, framework mappings or access reviews?
+## Verdict
 
-### Takeaway
-Access control vendors give you raw audit trails, event and cardholder reports, and (Genetec ClearID) scheduled access reviews, but I found no vendor that maps its reports to ISO 27001 Annex A 7.x, SOC 2, SOCI or PCI DSS controls. Their own SOC 2/ISO certifications are about their cloud service, not about helping customers comply.
+- "No product turns physical security data into compliance evidence" is **false**. Enterprise PIAM tools (AlertEnterprise, HID SAFE, RightCrowd, Genetec ClearID) already run access reviews and make audit-ready reports, and AlertEnterprise runs inside ServiceNow.
+- "Startup GRC tools (Vanta, Drata) don't pull evidence from door or camera systems" **looks true** on what was found.
+- What still looks open: (1) mid-market prices across many vendors and sites; (2) evidence beyond "who holds which badge": camera recording uptime, door forced/held alarms and response times, visitor logs; (3) physical evidence joined with roster, people and cyber evidence per control; (4) Australian frameworks built in (SOCI CIRMP physical hazards, PSPF, ISM) alongside ISO 27001 and SOC 2; (5) pushing evidence into GRC tools customers already own (Vanta, Drata, 6clicks).
+- Main risks: RightCrowd or Genetec moving down-market; Vanta or Drata quickly adding a Verkada or Brivo connector (both have cloud APIs).
 
-### Cited Findings
-- Genetec ClearID lets site owners schedule or manually launch access reviews; approvers verify area or role access, revoked access is removed when the review completes, and a report is generated covering completed reviews for all sites on the ClearID account — [Genetec ClearID access reviews feature note](https://resources.genetec.com/en-feature-notes/genetec-clearid-access-reviews); [Genetec video: schedule and complete an identity access review in ClearID](https://resources.genetec.com/videos/how-to-schedule-and-complete-an-identity-access-review-in-clearid)
-- Genetec markets this as audit readiness but no source found states it is mapped to a specific ISO 27001 control — [Genetec ClearID feature note](https://resources.genetec.com/en-feature-notes/genetec-clearid-access-reviews) (absence of mapping is my reading of the snippet)
-- Genetec's own ISO 27001 (six years running as of 2023), ISO 27017 and SOC 2 Type 2 cover Genetec's cloud products including ClearID, i.e. Genetec as a supplier, not the customer's controls — [Genetec press release Feb 2023](https://rss.globenewswire.com/news-release/2023/02/01/2600009/0/en/Genetec-achieves-stringent-certifications-through-commitment-to-cybersecurity-and-privacy.html)
-- Gallagher Command Centre reports cover "events, cardholders and their access"; no compliance report or framework mapping is described — [Gallagher Command Centre datasheet (sourcesecurity.com)](https://sourcesecurity.com/datasheets/gallagher-c201311-access-control-software/co-723-ga/Command%20Centre%20Datasheet.pdf)
-- Gallagher sells separate optional Competencies and Compliance licences for Command Centre (e.g. "2A8959 Competencies License") — [Gallagher Command Centre datasheet](https://sourcesecurity.com/datasheets/gallagher-c201311-access-control-software/co-723-ga/Command%20Centre%20Datasheet.pdf); [Gallagher Competency and Compliance (sourcesecurity.com)](https://sourcesecurity.com/gallagher-competency-and-compliance-access-control-software-technical-details.html)
-- Verkada Command keeps an audit log of user and device activity with an Access Control event category, exportable as CSV by Org Admins; legacy logs record timestamp, IP, username, email and action — [Verkada help: audit logs](https://help.verkada.com/command/organization-settings/manage-your-admin-page-settings/manage-and-view-audit-logs); [Verkada legacy audit logs](https://help.verkada.com/en/articles/5488687-legacy-audit-logs)
-- Verkada's integration partner list is hardware (ASSA ABLOY, Schlage, Suprema) and evidence export to Axon Evidence for video, not GRC tools — [Verkada integrations partners](https://www.verkada.com/integrations/partners/)
-- Brivo holds SOC 2 Type II (report under NDA) and offers an open API; no customer compliance-reporting feature found — [Brivo security and compliance](https://brivo.com/about/security-and-compliance/)
-- Salto Systems: the search returned salto.io, which is a different company (SaaS configuration), so ignore it; the Salto Systems (door locks) legal TOMs document is about their own data protection — [saltosystems.com TOMs PDF](https://saltosystems.com/sites/default/files/downloads/legal/2029_TechnicalandOrganizationalMeasures_Legal_vi.pdf)
+## 1. Door and camera vendors
 
-### Inferences
-- Door and camera vendors treat compliance as "you can export the logs". Turning those logs into control evidence (who reviewed, what was revoked, which ISO clause it satisfies) is left to the customer or a PIAM layer.
-- ClearID access reviews only cover Genetec's own ecosystem (ClearID is designed to sit on Security Center/Synergis); a multi-vendor site gets no single review.
+Bottom line: they give raw audit trails, event and cardholder reports and (ClearID) scheduled access reviews. No vendor found maps its reports to ISO 27001 A.7, SOC 2, SOCI or PCI DSS. Their own SOC 2 and ISO certificates cover their cloud service, not the customer's controls.
 
-### Gaps
-- Not checked: Milestone XProtect, LenelS2 OnGuard, Avigilon/Avigilon Alta (Openpath), Inner Range Integriti, ICT Protege, Salto KS/Space compliance features. No search result described any compliance-mapping feature from them; that is absence of evidence, not proof.
-- Whether Gallagher's "Compliance" licence includes any framework-mapped reports could not be confirmed from the datasheet snippets.
-- Camera-health evidence (proof cameras were recording, retention met) as a compliance artefact: no vendor source found either way.
+- **Genetec ClearID:** owners schedule or launch access reviews; approvers check area or role access; revoked access is removed when the review ends; a report covers completed reviews for all sites on the account. Marketed as audit readiness, but no source maps it to an ISO 27001 control (our reading of the snippet). — [ClearID access reviews](https://resources.genetec.com/en-feature-notes/genetec-clearid-access-reviews); [Genetec video](https://resources.genetec.com/videos/how-to-schedule-and-complete-an-identity-access-review-in-clearid)
+- Genetec's ISO 27001 (six years running in 2023), ISO 27017 and SOC 2 Type 2 cover its cloud products, ClearID included, as a supplier. — [Genetec, Feb 2023](https://rss.globenewswire.com/news-release/2023/02/01/2600009/0/en/Genetec-achieves-stringent-certifications-through-commitment-to-cybersecurity-and-privacy.html)
+- **Gallagher Command Centre** reports cover "events, cardholders and their access"; no compliance report or framework mapping is described. It sells separate optional Competencies and Compliance licences (e.g. "2A8959 Competencies License"). — [Command Centre datasheet](https://sourcesecurity.com/datasheets/gallagher-c201311-access-control-software/co-723-ga/Command%20Centre%20Datasheet.pdf); [Gallagher Competency and Compliance](https://sourcesecurity.com/gallagher-competency-and-compliance-access-control-software-technical-details.html)
+- **Verkada Command** keeps an audit log of user and device activity, with an Access Control event category, exportable as CSV by Org Admins. Legacy logs record time, IP, username, email and action. No Verkada Splunk app found. — [Verkada audit logs](https://help.verkada.com/command/organization-settings/manage-your-admin-page-settings/manage-and-view-audit-logs); [Legacy audit logs](https://help.verkada.com/en/articles/5488687-legacy-audit-logs)
+- Verkada's integration partners are hardware (ASSA ABLOY, Schlage, Suprema) plus video export to Axon Evidence, not GRC tools. — [Verkada partners](https://www.verkada.com/integrations/partners/)
+- **Brivo** holds SOC 2 Type II (report under NDA) and has an open API; no customer compliance reports found. — [Brivo](https://brivo.com/about/security-and-compliance/)
+- **Salto Systems** (door locks): its legal TOMs document covers its own data protection. (Search also returned salto.io, an unrelated SaaS firm; ignore it.) — [Salto TOMs (PDF)](https://saltosystems.com/sites/default/files/downloads/legal/2029_TechnicalandOrganizationalMeasures_Legal_vi.pdf)
 
-## Do PIAM vendors provide compliance evidence, recertification and GRC integrations?
+Our reading: door and camera vendors treat compliance as "you can export the logs". Turning logs into control evidence (who reviewed, what was removed, which ISO clause it meets) is left to the customer or a PIAM layer. ClearID covers only Genetec's own ecosystem, so a mixed-vendor site gets no single review.
 
-### Takeaway
-Yes. This is where the gap is already filled for large enterprises: AlertEnterprise Guardian (native ServiceNow app), HID SAFE (attestation audits, evidence-ready reports), RightCrowd SmartAccess (Access Audit module, audit-ready reports, ServiceNow integration) and Genetec ClearID all do physical access recertification and audit reporting. None found integrates with Vanta or Drata.
+Not checked: Milestone XProtect, LenelS2 OnGuard, Avigilon/Avigilon Alta (Openpath), Inner Range Integriti, ICT Protege, Salto KS/Space (no compliance feature seen; that is absence of evidence, not proof); whether Gallagher's Compliance licence includes framework reports; camera-health evidence (proof cameras recorded, retention met) as an audit artefact: no source either way.
 
-### Cited Findings
-- AlertEnterprise describes Guardian as "the only native ServiceNow application" managing the full physical identity lifecycle; Guardian Hybrid uses ServiceNow for request intake, approvals, tracking and reporting; a Guardian AI Agent is on the ServiceNow AI Agent Marketplace — [ServiceNow partner finder: AlertEnterprise](https://servicenow.com/partners/partner-finder/alertenterprise-inc.html); [ServiceNow Store listing](https://apprepo.service-now.com/store/app/c81d27a21b646a50a85b16db234bcb95)
-- Guardian applies IAM-style recertification to doors, zones and facility entitlements, and recommends including contractors and visitors in recertification and offboarding — [NHIMG article (based on AlertEnterprise content)](https://nhimg.org/articles/physical-identity-and-access-governance-is-moving-to-automation/)
-- Guardian listing covers access certification, compliance management and governance — [Capterra: Enterprise Guardian](https://www.capterra.com/p/199385/Enterprise-Guardian/) (Capterra price "$1.00" and 3.0 rating look unreliable)
-- Guardian PIAM named a G2 Leader Spring 2026 (vendor-publicised figures) — [G2: AlertEnterprise Guardian](https://www.g2.com/products/alert-enterprise-guardian); CSA STAR Level 1 self-assessment listed 27 Mar 2026 — [CSA STAR registry](https://cloudsecurityalliance.org/star/registry/services/alertenterprise-guardian-piam-saas-platform)
-- HID SAFE is a PIAM "superhub" for "governed and auditable access management"; it has an Attestation Audit feature for removing no-longer-needed access; the government edition keeps a full audit trail and generates "evidence-ready reports", aligned to HIPAA, NIST/FIPS and CJIS physical access expectations; pricing not published ("varies by deployment scope") — [HID SAFE](https://www.hidglobal.com/products/software/hid-safe); [HID SAFE Government](https://www.hidglobal.com/ja/products/hid-safe-government); [HID SAFE Adoption Guide](https://securitytoday.com/whitepapers/2025/09/hidglobal-hid-safe-adoption-guide.aspx)
-- RightCrowd Access Audit (built into SmartAccess): scheduled, policy-driven reviews, digital sign-off, escalation of overdue items, auto-flagging of expired, out-of-scope or orphaned access, and "audit-ready reports with full history and attribution" filterable by contractor, company, location or credential type, exportable for regulatory inspections — [RightCrowd Access Audit Management](https://www.rightcrowd.com/solutions/access-audit-management/)
-- RightCrowd SmartAccess links PACS to business processes and automates access audits and attestation; a hyperscale data-centre case study runs it above C-CURE 9000 — [SmartAccess datasheet](https://rightcrowd.com/srv/htdocs/wp-content/uploads/2024/07/SmartAccess-Datasheet.pdf); [RightCrowd hyperscale case study](https://engage.rightcrowd.com/hubfs/Case%20Studies/Tech%20and%20Data%20Center/Governing%20Physical%20Access%20at%20Hyperscale%20-%20RightCrowd%20Case%20Study.pdf)
-- RightCrowd has a "ServiceNow + RightCrowd" integration page (content blocked, 403) — [RightCrowd ServiceNow page](https://www.rightcrowd.com/?p=30299)
-- RightCrowd's 2026 trends piece says the 2026 shift is the expectation that "physical access data should be usable as security evidence", via automated access reviews, tamper-resistant logs and repeatable evidence packs (vendor blog; seen via search snippet, fetch blocked) — [RightCrowd 2026 trends](https://www.rightcrowd.com/resources/blog/2026-security-and-compliance-trends-a-forward-looking-guide-for-physical-security-leaders/)
+## 2. PIAM vendors
 
-### Inferences
-- The "physical access evidence" product exists and is being actively marketed with exactly the founder's pitch language ("physical access data as security evidence"). The founder should not pitch "nobody does this"; buyers at large enterprises will have heard it from RightCrowd, AlertEnterprise or HID.
-- These are enterprise sales products (contact-sales pricing, ServiceNow-centric, data centres, government). That leaves mid-market and multi-site operators without ServiceNow underserved.
-- PIAM vendors focus on access entitlements (who can open which door). None found also treats camera health, alarm response, visitor logs and cyber controls as one evidence set.
+Bottom line: **for large enterprises this gap is already filled.** None found links to Vanta or Drata.
 
-### Gaps
-- Whether RightCrowd, AlertEnterprise or HID integrate with Archer, OneTrust, Vanta or Drata: not found.
-- Viscount (Freedom/Liberty) PIAM: not researched.
-- Which PACS each PIAM supports (Gallagher, Inner Range in particular): not confirmed from sources. From background knowledge (unsourced, verify), RightCrowd was founded in Brisbane, Australia, and has Gallagher integrations, which would make it the most direct local competitor.
-- Pricing for AlertEnterprise, HID SAFE, RightCrowd, ClearID: none published.
+- **AlertEnterprise Guardian** calls itself "the only native ServiceNow application" for the full physical identity lifecycle. Guardian Hybrid uses ServiceNow for requests, approvals, tracking and reports. A Guardian AI Agent is on ServiceNow's AI Agent Marketplace. It targets ServiceNow customers. — [ServiceNow partner finder](https://servicenow.com/partners/partner-finder/alertenterprise-inc.html); [ServiceNow Store](https://apprepo.service-now.com/store/app/c81d27a21b646a50a85b16db234bcb95)
+- Guardian applies identity-style recertification to doors, zones and facility access, and advises including contractors and visitors in recertification and offboarding. — [NHIMG (based on AlertEnterprise content)](https://nhimg.org/articles/physical-identity-and-access-governance-is-moving-to-automation/)
+- Its listing covers access certification, compliance management and governance (Capterra's "$1.00" price and 3.0 rating look unreliable). G2 Leader, Spring 2026 (vendor-publicised). CSA STAR Level 1 self-assessment listed 27 Mar 2026. — [Capterra](https://www.capterra.com/p/199385/Enterprise-Guardian/); [G2](https://www.g2.com/products/alert-enterprise-guardian); [CSA STAR](https://cloudsecurityalliance.org/star/registry/services/alertenterprise-guardian-piam-saas-platform)
+- **HID SAFE**: a PIAM "superhub" for "governed and auditable access management". Its Attestation Audit removes access no longer needed. The government edition keeps a full audit trail and makes "evidence-ready reports" aligned to HIPAA, NIST/FIPS and CJIS physical access rules. Price "varies by deployment scope, integrations, and organizational requirements" (no list price). — [HID SAFE](https://www.hidglobal.com/products/software/hid-safe); [HID SAFE Government](https://www.hidglobal.com/ja/products/hid-safe-government); [Adoption guide](https://securitytoday.com/whitepapers/2025/09/hidglobal-hid-safe-adoption-guide.aspx)
+- **RightCrowd Access Audit** (inside SmartAccess): scheduled, policy-based reviews; digital sign-off; escalation of overdue items; auto-flags expired, out-of-scope or orphaned access; "audit-ready reports with full history and attribution", filterable by contractor, company, location or credential type and exportable for inspections. — [RightCrowd Access Audit](https://www.rightcrowd.com/solutions/access-audit-management/)
+- RightCrowd SmartAccess links PACS to business processes and automates access audits and attestation. Case studies target hyperscale data centres (one runs it above C-CURE 9000). A "ServiceNow + RightCrowd" page exists (blocked, 403). — [SmartAccess datasheet](https://rightcrowd.com/srv/htdocs/wp-content/uploads/2024/07/SmartAccess-Datasheet.pdf); [Hyperscale case study](https://engage.rightcrowd.com/hubfs/Case%20Studies/Tech%20and%20Data%20Center/Governing%20Physical%20Access%20at%20Hyperscale%20-%20RightCrowd%20Case%20Study.pdf); [RightCrowd ServiceNow](https://www.rightcrowd.com/?p=30299)
+- RightCrowd's 2026 trends blog (snippet only) says the 2026 shift is expecting "physical access data should be usable as security evidence", through automated access reviews, tamper-resistant logs and repeatable evidence packs. — [RightCrowd 2026 trends](https://www.rightcrowd.com/resources/blog/2026-security-and-compliance-trends-a-forward-looking-guide-for-physical-security-leaders/)
 
-## Do Vanta, Drata, Secureframe, 6clicks, ServiceNow IRM, AuditBoard have connectors for physical access or camera systems?
+Our reading: the product exists and is sold with almost the founder's own pitch words. Don't pitch "nobody does this"; big buyers will have heard it from RightCrowd, AlertEnterprise or HID. These are enterprise, contact-sales, ServiceNow-centred products (data centres, government), which leaves mid-market and non-ServiceNow multi-site operators underserved. They focus on who can open which door; none treats camera health, alarm response, visitor logs and cyber controls as one evidence set.
 
-### Takeaway
-For Vanta and Drata, no physical access or camera connector was found; Drata's Envoy integration only reviews who has accounts in the Envoy app, not visitor or door events. ServiceNow is the exception through third-party PIAM apps (AlertEnterprise, RightCrowd), not through IRM itself.
+Not checked: whether RightCrowd, AlertEnterprise or HID link to Archer, OneTrust, Vanta or Drata; Viscount (Freedom/Liberty) PIAM; which PACS each supports (Gallagher and Inner Range especially); [K] RightCrowd was founded in Brisbane and has Gallagher integrations, which would make it the closest local competitor; any PIAM pricing (needs sales talks or analysts); Gartner/Omdia PIAM market size; independent PIAM adoption data for Australia.
 
-### Cited Findings
-- Vanta's integrations page (first of 21 pages checked) shows no physical security, door, badge, camera or visitor integration; none of Verkada, Brivo, Envoy, Kisi, Openpath, Genetec, Gallagher, HID or Salto appear on that page — [Vanta integrations](https://www.vanta.com/integrations)
-- Drata's Envoy integration imports "Envoy user account data" to "help organizations review who has access to Envoy" (a user access review of the app), not visitor logs or physical access events — [Drata help: Envoy integration guide](https://help.drata.com/en/articles/9769744-envoy-integration-guide)
-- No Kisi or Secureframe physical-security connector found; third-party comparisons note manual evidence collection for specialised tools — [Drata vs Secureframe comparison (rfp.wiki)](https://www.rfp.wiki/legal-compliance/governance-risk-compliance-tools/compliance-monitoring-solutions/drata/secureframe)
-- Compliance automation platforms mostly pull from cloud, identity, HR and code systems; new entrant Comp AI raised US$34M in Sept 2026 positioned as a Vanta alternative for SOC 2/ISO 27001 — [SiliconANGLE, 17 Sep 2026](https://siliconangle.com/2026/09/17/compliance-automation-startup-comp-ai-raises-34m-to-push-into-security/)
-- Typical guidance for SOC 2/ISO 27001 physical security evidence is policy plus manually retained records mapped to controls — [SecureSlate physical security policy guide](https://getsecureslate.com/blog/physical-security-policy)
+## 3. GRC tools (Vanta, Drata, Secureframe, ServiceNow)
 
-### Inferences
-- In Vanta/Drata today, physical controls (ISO 27001 A.7.1 to A.7.14) are typically satisfied by uploaded documents and screenshots. A connector that pushes door-review, visitor-log and camera-uptime evidence into Vanta/Drata (both have custom-evidence APIs, not verified here) is a plausible wedge that nobody appears to have built.
-- Because these GRC tools are aimed at SaaS companies with one office, demand for physical connectors is low in their core market; the demand lives with multi-site operators (data centres, critical infrastructure, health, mining).
+Bottom line: no physical access or camera connector found for Vanta or Drata. ServiceNow is the exception, but through third-party PIAM apps (AlertEnterprise, RightCrowd), not IRM itself.
 
-### Gaps
-- Vanta pages 2 to 21, 6clicks (Australian GRC), AuditBoard, Archer, OneTrust and the ServiceNow Store beyond AlertEnterprise were not checked. 6clicks matters most for an Australian founder and is unverified.
+- Vanta's integrations page (page 1 of 21 checked) shows no physical security, door, badge, camera or visitor integration; none of Verkada, Brivo, Envoy, Kisi, Openpath, Genetec, Gallagher, HID or Salto. — [Vanta integrations](https://www.vanta.com/integrations)
+- Drata's Envoy integration imports "Envoy user account data" to review who has Envoy accounts, not visitor logs or door events. — [Drata Envoy guide](https://help.drata.com/en/articles/9769744-envoy-integration-guide)
+- No Kisi or Secureframe physical-security connector found; comparisons note manual evidence for specialised tools. — [rfp.wiki](https://www.rfp.wiki/legal-compliance/governance-risk-compliance-tools/compliance-monitoring-solutions/drata/secureframe)
+- Usual SOC 2 / ISO 27001 physical-security evidence is a policy plus records kept by hand and mapped to controls. — [SecureSlate](https://getsecureslate.com/blog/physical-security-policy)
+- Compliance automation tools mostly pull from cloud, identity, HR and code systems (Comp AI's 2026 raise: gaps file Q7).
 
-## Do converged security / SecOps platforms (Splunk, Sentinel, Everbridge, Genetec Mission Control) produce compliance reports from physical systems?
+Our reading: in Vanta and Drata today, the physical controls (A.7.1 to A.7.14) are met with uploaded documents and screenshots. A connector that pushes door reviews, visitor logs and camera uptime into them (Vanta's custom-resource API supports this: plugin file section 1) seems unbuilt. Their core buyers are single-office SaaS firms, so demand for physical connectors sits with multi-site operators (data centres, critical infrastructure, health, mining).
 
-### Takeaway
-I found no native Sentinel or Splunk connector for Verkada or Genetec in the results; the documented route is generic syslog/CEF or custom log ingestion. These tools collect and alert; they don't produce physical-control compliance reports out of the box.
+Not checked: Vanta integration pages 2-21; 6clicks (most important for an Australian founder), AuditBoard, Archer, OneTrust; the ServiceNow Store beyond AlertEnterprise.
 
-### Cited Findings
-- Microsoft's connector reference directs appliances without a dedicated connector to Syslog via AMA, CEF via AMA or Custom Logs via AMA; no Verkada or Genetec entry surfaced in search — [Microsoft Sentinel data connectors reference](https://learn.microsoft.com/en-us/azure/sentinel/data-connectors-reference)
-- No Verkada Splunk app surfaced; Verkada audit data is exportable as CSV — [Verkada help: audit logs](https://help.verkada.com/command/organization-settings/manage-your-admin-page-settings/manage-and-view-audit-logs)
+## 4. SIEM and converged security platforms
 
-### Inferences
-- A SIEM can hold door and camera logs, but someone still has to build the compliance view. That is consulting work today, which supports a productised evidence layer.
+- Microsoft Sentinel sends devices without their own connector through Syslog, CEF or Custom Logs via AMA; no Verkada or Genetec connector came up. — [Sentinel connectors](https://learn.microsoft.com/en-us/azure/sentinel/data-connectors-reference)
+- No Verkada Splunk app found; Verkada audit data exports as CSV (section 1).
 
-### Gaps
-- Splunkbase and Sentinel Content Hub were not browsed directly; a Genetec or Verkada app may exist there. Everbridge and Genetec Mission Control compliance reporting: not researched within the search budget.
+Our reading: a SIEM can hold door and camera logs, but someone still has to build the compliance view. Today that is consulting work, which supports a product.
 
-## Is anything linking contractor licences and inductions to door access? How complete is it?
+Not checked: Splunkbase and Sentinel Content Hub directly (a Genetec or Verkada app may exist); Everbridge and Genetec Mission Control reports.
 
-### Takeaway
-Yes, and it is mature on Gallagher sites in Australia: Gallagher's competencies feature plus integrations with Rapid Global (contractor compliance) and Sine (visitor management) already grant or deny door access based on induction and licence status. The gap is not the link itself but cross-vendor coverage and turning it into audit evidence.
+## 5. Contractor licences and inductions linked to doors
 
-### Cited Findings
-- Gallagher's Rapid Induct integration uses Command Centre competencies to automate granting and denying site access based on a person's compliance status in Rapid; requires Command Centre v8.60+ and a licence per competency — [Gallagher product page: Rapid Induct integration](https://products.security.gallagher.com/security/uk/en_UK/c/rapid-induct/p/INT158)
-- Gallagher's mining brochure: import competency data from HR or contractor management systems; random cardholder selection to check competencies, licensing, drug and alcohol testing — [Gallagher Mining Solutions brochure](https://security.gallagher.com/-/media/Bynder/Security/Document/Brochure/Mining-Solutions-Brochure-original.pdf)
-- Sine (by Honeywell) integrates with Command Centre to create and remove visitor credentials automatically (v8.30+); needs Sine Core large or enterprise plan — [Gallagher: Sine integration](https://products.security.gallagher.com/security/global/en/products/sine-by-honeywell-integration/p/C13078); [Sine: Gallagher integration](https://www.sine.co/integrations/gallagher)
-- An Australian dashboard integrated with Command Centre validates competencies (inductions, licences, certifications) on arrival (article date unconfirmed) — [sen.news](https://sen.news/?p=76451)
-- Sign In App also markets a Gallagher access control integration — [Sign In App: Gallagher](https://signinapp.com/gallagher-access-control)
+Bottom line: **mature on Gallagher sites in Australia.** Gallagher competencies plus Rapid Global (contractor compliance) and Sine (visitors) already grant or deny doors by induction and licence status. The gap is cross-vendor coverage and turning it into audit evidence, not the link itself.
 
-### Inferences
-- "Licence expired, door stops working" is solved on Gallagher. A product pitching that as novel would lose credibility with Australian security integrators.
-- What is not evident: one report showing, across sites and access vendors, that every person who badged in had valid inductions at the time, joined to roster data. That is the evidence an auditor or SOCI/WHS regulator would want, and it remains a plausible gap.
+- Gallagher's Rapid Induct integration uses Command Centre competencies to grant or deny site access from a person's status in Rapid; needs Command Centre v8.60+ and a licence per competency. — [Gallagher: Rapid Induct](https://products.security.gallagher.com/security/uk/en_UK/c/rapid-induct/p/INT158)
+- Gallagher's mining brochure: import competencies from HR or contractor systems; random cardholder checks for competencies, licences, and drug and alcohol tests. — [Gallagher mining (PDF)](https://security.gallagher.com/-/media/Bynder/Security/Document/Brochure/Mining-Solutions-Brochure-original.pdf)
+- Sine (by Honeywell) creates and removes visitor credentials in Command Centre automatically (v8.30+; needs a Sine Core large or enterprise plan). — [Gallagher: Sine](https://products.security.gallagher.com/security/global/en/products/sine-by-honeywell-integration/p/C13078); [Sine: Gallagher](https://www.sine.co/integrations/gallagher)
+- An Australian dashboard on Command Centre checks inductions, licences and certifications on arrival (article date not confirmed). Sign In App also markets a Gallagher integration. — [sen.news](https://sen.news/?p=76451); [Sign In App](https://signinapp.com/gallagher-access-control)
 
-### Gaps
-- SignOnSite, Cm3, Linkt: no results returned within budget; their Gallagher/Inner Range integration status is unknown.
-- Inner Range Integriti competency or contractor-compliance integration: not researched.
+Our reading: "licence expired, door stops working" is solved on Gallagher; pitching it as new would lose trust with Australian security integrators. Not seen anywhere: one report showing, across sites and door vendors, that everyone who badged in held valid inductions at that moment, joined to roster data. That is what an auditor or a SOCI/WHS regulator would want, and it is still a plausible gap.
 
-## Pricing, target market and what is still missing
-
-### Takeaway
-The closest competitors (AlertEnterprise, HID SAFE, RightCrowd, Genetec ClearID) are enterprise, contact-sales products, often ServiceNow-centric and focused on access entitlements only. What still looks missing: a mid-market, cross-vendor (Gallagher plus Inner Range plus Genetec plus cloud ACS) evidence layer that joins door, camera health, visitor, roster and cyber evidence in one control view mapped to Australian frameworks (SOCI, ISM/PSPF) as well as ISO 27001 and SOC 2, with export into Vanta/Drata/6clicks.
-
-### Cited Findings
-- HID SAFE pricing "varies by deployment scope, integrations, and organizational requirements" (no list price) — [HID SAFE](https://www.hidglobal.com/products/software/hid-safe)
-- AlertEnterprise targets ServiceNow customers via a native app — [ServiceNow partner finder](https://servicenow.com/partners/partner-finder/alertenterprise-inc.html)
-- RightCrowd case studies target hyperscale data centres — [RightCrowd hyperscale case study](https://engage.rightcrowd.com/hubfs/Case%20Studies/Tech%20and%20Data%20Center/Governing%20Physical%20Access%20at%20Hyperscale%20-%20RightCrowd%20Case%20Study.pdf)
-- RightCrowd frames 2026 as the year physical access data becomes security evidence — [RightCrowd 2026 trends](https://www.rightcrowd.com/resources/blog/2026-security-and-compliance-trends-a-forward-looking-guide-for-physical-security-leaders/)
-
-### Inferences
-- Verdict on the founder's claim: **partly refuted**. "No GRC tool pulls evidence directly from physical security systems" is roughly true for Vanta/Drata-class tools but false for the ServiceNow ecosystem and for PIAM products that are themselves compliance-evidence tools for physical access.
-- Defensible differentiation for the founder is not "physical evidence exists" but: (1) multi-vendor and multi-site in mid-market price bands; (2) evidence beyond entitlements: camera recording uptime, door-forced/held alarms and response times, visitor logs; (3) joining physical with roster/people and cyber evidence per control; (4) Australian frameworks (SOCI CIRMP physical hazards, PSPF) out of the box; (5) pushing evidence into existing GRC tools rather than replacing them.
-- Main risk: RightCrowd (likely Australian-origin, unverified) or Genetec could move downmarket, and Vanta/Drata could add a Verkada or Brivo connector quickly since those are cloud APIs.
-
-### Gaps
-- No public pricing for any PIAM competitor; would need sales conversations or analyst reports (Gartner/Omdia PIAM market sizing not found within budget).
-- No evidence found on SOCI or PCI DSS Requirement 9 specific mappings by any vendor.
-- No independent (non-vendor) adoption data for PIAM in Australia.
+Not checked: SignOnSite, Cm3, Linkt (no results within budget); Inner Range Integriti competency or contractor links. No vendor found with SOCI or PCI DSS Requirement 9 mappings.
