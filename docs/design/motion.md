@@ -46,7 +46,7 @@ The new theme grows in a circle from the theme button over 450ms on the house cu
 | Calendar event press | `scale: 0.98` |
 | Hover colours | background and colour in 150ms |
 | Tooltip | fades and grows from 0.96 in 0.14s, from the edge nearest its trigger. When "warm", no animation |
-| Popover and picker list | fades and grows from 0.96 in 0.18s, from its trigger |
+| Popover, picker list and More list | fades and grows from 0.96 in 0.18s, from its trigger |
 | Toast | rises 12px and fades in over 0.25s; drops 6px and fades out over 0.15s |
 | Switch | thumb slides in 0.2s; while pressed it stretches (`scale: 1.2 1`) away from its resting edge |
 | Hold button | fill grows with `scaleX` over 1.2s; let go early and it unwinds over 200ms |

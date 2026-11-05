@@ -1,10 +1,10 @@
 // The demo shell: Mycelium's header and pill nav, a "Viewing as" switcher that shows the same app as six different people,
 // a banner saying everything is fictional, and the feedback box under every page.
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import { NavLink, Navigate, Route, Routes, useLocation, useParams } from "react-router";
 import { Icon, Logo } from "../icons.jsx";
-import { Picker, rovingKeys } from "../ui.jsx";
-import { ThemeToggle, useMoreTabs, usePill } from "../shell.jsx";
+import { Picker } from "../ui.jsx";
+import { TabRow, ThemeToggle } from "../shell.jsx";
 import Page from "../Page.jsx";
 import { COMPANY, PERSONAS, person } from "./data.js";
 import { ASSUMPTIONS } from "./assumptions.js";
@@ -83,15 +83,11 @@ function Shell() {
   const rollcallOn = !!rollcall; // while a roll call runs the banner says so on every page (rollcall.jsx)
   // ...and turns red only for people who run it or work at that site; everyone else gets the line without the alarm
   const rollcallUrgent = rollcallOn && ((grants[persona.id] || []).includes("emergency") || person(persona.person)?.site === rollcall.site);
-  const rowRef = useRef(null), pillRef = useRef(null);
-  usePill(rowRef, pillRef, `${persona.id}/${id}`);
   useEffect(() => { loadAnswers(); }, []);
-  useEffect(() => { document.querySelector(".pill.active")?.scrollIntoView?.({ block: "nearest", inline: "center" }); }, [id]);
   const page = PAGES.find((p) => p.id === id) || { id, title: "Page not found", component: () => <p className="notice">There's no page here.</p> };
   const nav = PAGES.filter((p) => !p.tool && !p.hidden && canSee(p, persona.id, grants));
   const tools = PAGES.filter((p) => p.tool && canSee(p, persona.id, grants));
   const answered = ASSUMPTIONS.filter((a) => answers[a.id]).length;
-  const more = useMoreTabs(rowRef, [nav.length, tools.length]); // fade the tab row's end only while tabs are hidden past it
   const Body = page.component;
   const visible = canSee(page, persona.id, grants);
   useEffect(() => { document.title = `${page.title} · Mycelium Ops`; }, [page.title]);
@@ -104,17 +100,10 @@ function Shell() {
           <Picker label="Viewing as" icon="user" value={persona.id} onChange={(v) => update(() => ({ viewer: v }))}
             options={PERSONAS.map((p) => ({ value: p.id, label: p.label }))} />
         </div>
-        <nav className="pills" aria-label="Pages">
-          <ul role="list" ref={rowRef} className={more ? "has-more" : undefined} onKeyDown={(e) => rovingKeys(e, "a.pill")}>
-            <li className="pill-indicator" ref={pillRef} role="presentation" aria-hidden="true" />
-            {nav.map((p) => (
-              <li key={p.id}><NavLink to={`/${p.id}`} end className="pill"><Icon name={p.icon} /><span>{p.short}</span></NavLink></li>
-            ))}
-            {tools.map((p) => ( /* below 960px the header has no room for these, so they join the end of the tab row */
-              <li key={p.id} className="pill-tool"><NavLink to={`/${p.id}`} end className="pill"><Icon name={p.icon} /><span>{p.short}</span></NavLink></li>
-            ))}
-          </ul>
-        </nav>
+        <TabRow navKey={`${persona.id}/${id}`} tabs={[
+          ...nav.map((p) => ({ to: `/${p.id}`, end: true, icon: p.icon, label: p.short })),
+          ...tools.map((p) => ({ to: `/${p.id}`, end: true, icon: p.icon, label: p.short, tool: true })), // join the row below 960px
+        ]} />
         <div className="topbar-end">
           <SystemsLink answered={answered} className="button systems-button" />
           <button type="button" className="button feedback-button" onClick={() => openFeedback(null)}><Icon name="message" /><span>Feedback</span></button>
