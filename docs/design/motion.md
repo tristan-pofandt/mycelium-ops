@@ -72,6 +72,10 @@ The new theme grows in a circle from the theme button over 450ms on the house cu
 
 Screens change every 15s. A 4px accent bar on a `--border-strong` track shows the time left (`scaleX`, linear). Only the automatic change crossfades (old out and new in together, opacity 0.4s). Buttons and keys change screens at once: Left and Right step, Space pauses. Reduced motion drops the crossfade and hides the bar.
 
+## 3D map camera
+
+A relationship map is 3D (see `parts.md`). Drag turns it, scroll zooms, right-drag pans. Clicking a node (or picking it with Find or the arrow keys) flies the camera round to face that node and its neighbours in 1.2s on the house curve; it turns around the cluster rather than cutting through the map. The first fit after loading takes 0.45s. The rest of the map fades to 12% over 150ms. Clicking empty space or Escape flies back to the whole map. Grabbing the map stops a flight. No idle spinning. Under reduced motion the camera jumps instead of flying.
+
 ## Map pulses
 
 On a live map, each event is one crisp dot travelling along a line in 0.7s, ending in a ring on the node over 0.6s (colours are the `--ev-*` tokens). Lines active in the last 60s carry two faint slow dots (2.6s per trip, at most 60 lines). A door read on a plan pulses a 3px ring from scale 1 to 1.6 while fading from 0.8 to 0 over 0.6s (accent, or red when denied). No glow. Under reduced motion the line only lights up briefly.
